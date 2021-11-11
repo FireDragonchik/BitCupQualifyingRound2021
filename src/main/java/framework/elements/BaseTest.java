@@ -11,8 +11,8 @@ public abstract class BaseTest {
 
 	@BeforeTest
 	protected void setUp() {
-		BrowserFactory.getDriver();
-		BrowserFactory.getDriver().manage().window().maximize();
+		BrowserFactory.getInstanceDriver();
+		BrowserFactory.getInstanceDriver().manage().window().maximize();
 	}
 
 	@AfterTest

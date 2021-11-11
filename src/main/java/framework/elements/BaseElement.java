@@ -4,51 +4,86 @@ import framework.browser.BrowserFactory;
 import framework.utils.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public abstract class BaseElement {
-	By locator;
-	String name;
+    By locator;
+    String name;
 
-	public static Logger logger = Logger.getInstance();
+    private static final Duration POLLING = Duration.ofSeconds(10);
 
-	public BaseElement(By locator, String name) {
-		this.locator = locator;
-		this.name = name;
-	}
+    public static Logger logger = Logger.getInstance();
 
-	public WebElement findElement() {
+    public BaseElement(By locator, String name) {
+        this.locator = locator;
+        this.name = name;
+    }
 
-		logger.info("Looking for the element with locator: " + locator);
-		return BrowserFactory.getDriver().findElement(locator);
-	}
+    public WebElement findElement() {
 
-	public boolean isDisplayed() {
+        return BrowserFactory.getInstanceDriver().findElement(locator);
+    }
 
-		logger.info("Checking the display of the element with locator: " + locator);
-		return BrowserFactory.getDriver().findElement(locator).isDisplayed();
-	}
+    public WebElement findElement(long timeoutInSeconds) {
+        BrowserFactory.getInstanceDriver().manage().timeouts().implicitlyWait(0L, TimeUnit.SECONDS);
+        WebDriverWait wait = new WebDriverWait(BrowserFactory.getInstanceDriver(), timeoutInSeconds);
+        wait.pollingEvery(POLLING);
+        wait.withMessage("Element " + name + " is not found");
+        return wait.until(driver -> {
+            List<WebElement> elements = driver.findElements(locator);
+            if (!elements.isEmpty()) {
+                return elements.get(0);
+            } else {
+                return null;
+            }
+        });
+    }
 
-	public void click() {
+    public boolean isDisplayed() {
 
-		findElement().click();
-		logger.info("Clicking on the element with locator: " + locator);
-	}
+        logger.info(String.format("Check if the element '%s' is displayed", name));
+        return BrowserFactory.getInstanceDriver().findElement(locator).isDisplayed();
+    }
 
-	public String getAttribute(String attribute) {
+    public void click() {
 
-		logger.info("Getting attribute " + attribute + "  of the element with locator: " + locator);
-		return findElement().getAttribute(attribute);
-	}
+        logger.info(String.format("Clicking on the element '%s'", name));
+        findElement().click();
+    }
 
-	public String getName() {
+    public String getAttribute(String attribute) {
 
-		logger.info("Getting name of the element with locator: " + locator);
-		return name;
-	}
-	
-	public String getText() {
+        return findElement().getAttribute(attribute);
+    }
 
-		logger.info("Getting text of the element with locator: " + locator);
-		return findElement().getText();
-	}
+    public String getName() {
+
+        return name;
+    }
+
+    public String getText() {
+
+        return findElement().getText();
+    }
+
+    public void clear() {
+
+        findElement().clear();
+    }
+
+    public void type(String text) {
+
+        logger.info(String.format("Send keys '%1s' to '%2s'", text, name));
+        findElement().sendKeys(text);
+    }
+
+    public void clearAndType(String text) {
+
+        clear();
+        type(text);
+    }
 }

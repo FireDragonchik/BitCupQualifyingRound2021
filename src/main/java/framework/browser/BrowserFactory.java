@@ -17,12 +17,11 @@ public class BrowserFactory {
 	static WebDriver driver;
 	public static Logger logger = Logger.getInstance();
 
-	public static WebDriver getDriver() {
-
-		ConfigManager.getConfigProperties();
-		TestDataManager.getTestDataProperties();
+	public static WebDriver getInstanceDriver() {
 
 		if (driver == null) {
+			ConfigManager.getConfigProperties();
+			TestDataManager.getTestDataProperties();
 			logger.info("Open " + configProperties.browser.getProperty());
 			switch (configProperties.browser.getProperty()) {
 				case "Chrome" -> setChrome(configProperties.localization.getProperty());

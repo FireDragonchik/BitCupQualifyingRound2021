@@ -26,7 +26,7 @@ public abstract class BaseForm {
 	public void waitForOpen() {
 
 		logger.info("Wait for page open");
-		WebDriverWait wait = new WebDriverWait(BrowserFactory.getDriver(), Integer.parseInt(configProperties.durationOfSeconds.getProperty()));
+		WebDriverWait wait = new WebDriverWait(BrowserFactory.getInstanceDriver(), Integer.parseInt(configProperties.durationOfSeconds.getProperty()));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(element.locator));
 	}
 }

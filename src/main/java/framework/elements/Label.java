@@ -2,9 +2,9 @@ package framework.elements;
 
 import org.openqa.selenium.By;
 
-public class Text extends BaseElement{
+public class Label extends BaseElement{
 
-	public Text(By locator, String name) {
+	public Label(By locator, String name) {
 		super(locator, name);
 	}
 }
