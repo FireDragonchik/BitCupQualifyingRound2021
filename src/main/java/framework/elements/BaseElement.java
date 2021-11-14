@@ -14,7 +14,7 @@ public abstract class BaseElement {
     By locator;
     String name;
 
-    private static final Duration POLLING = Duration.ofSeconds(10);
+    private static final Duration POLLING = Duration.ofSeconds(5);
 
     public static Logger logger = Logger.getInstance();
 

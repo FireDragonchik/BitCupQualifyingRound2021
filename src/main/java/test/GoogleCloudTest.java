@@ -2,10 +2,10 @@ package test;
 
 import framework.browser.BrowserUtils;
 import framework.elements.BaseTest;
-import framework.utils.WebElementUtils;
 import org.testng.annotations.Test;
 import pageObject.GoogleCloudMainPage;
 import pageObject.GoogleCloudSearchResultPage;
+import pageObject.PricingCalculatorPage;
 
 public class GoogleCloudTest extends BaseTest {
 
@@ -28,6 +28,11 @@ public class GoogleCloudTest extends BaseTest {
 		searchResultPage.waitPageLoaded();
 
 		searchResultPage.clickOnSearchResultLink(SEARCH_RESULT_TEXT);
+
+		PricingCalculatorPage calculatorPage = new PricingCalculatorPage();
+		calculatorPage.waitPageLoaded();
+
+		calculatorPage.fill("1");
 
 		logger.info("Test ended");
 	}

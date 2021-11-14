@@ -1,6 +1,7 @@
 package framework.browser;
 
 import framework.utils.Logger;
+import framework.utils.WebElementUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
